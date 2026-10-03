@@ -1,4 +1,4 @@
-import { LessonPlayer } from "@/components/LessonPlayer";
+import { ColorMvpLesson } from "@/components/ColorMvpLesson";
 
 export default function Home() {
   return (
@@ -8,16 +8,16 @@ export default function Home() {
           <p className="eyebrow">English Adventure · ป.1</p>
           <h1>เรียนอังกฤษผ่านการฟัง เล่น และสำรวจ</h1>
           <p className="hero-copy">
-            MVP สำหรับทดสอบ Lesson Engine ก่อนขยายเป็น 20 บทเรียนเต็ม
+            MVP ที่เล่นจบได้จริง: Learn → Explore 3D → Listen → Game → Quiz → Reward
           </p>
         </div>
         <div className="hero-note">
-          <strong>Learning loop</strong>
-          <span>Learn → Listen → Practice → Game → Quiz → Reward</span>
+          <strong>MVP Focus</strong>
+          <span>L08 · Colors Around Me</span>
         </div>
       </section>
 
-      <LessonPlayer />
+      <ColorMvpLesson />
     </main>
   );
 }
