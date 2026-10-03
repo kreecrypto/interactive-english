@@ -11,6 +11,7 @@ const colors = [
   { word: "Purple", thai: "สีม่วง", hex: "#a855f7" }
 ];
 
+const colorWords = colors.map((item) => item.word);
 const steps = ["Intro", "Learn", "Explore", "Listen", "Game", "Quiz", "Reward"] as const;
 const listenTargets = [1, 0, 3];
 const gameTargets = [3, 4, 2];
@@ -312,7 +313,7 @@ export function ColorMvpLesson() {
             <div className="mvp-three-wrap">
               <ThreeLessonScene
                 sceneType="colors"
-                words={colors.map((item) => item.word)}
+                words={colorWords}
                 activeIndex={activeWord}
                 onPick={explorePick}
               />
@@ -398,7 +399,7 @@ export function ColorMvpLesson() {
             <div className="mvp-three-wrap">
               <ThreeLessonScene
                 sceneType="colors"
-                words={colors.map((item) => item.word)}
+                words={colorWords}
                 activeIndex={activeWord}
                 onPick={answerGame}
               />
