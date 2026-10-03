@@ -40,6 +40,19 @@ function geometryFor(sceneType: LessonScene, index: number): THREE.BufferGeometr
 
 export function ThreeLessonScene({ sceneType, words, activeIndex, onPick }: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
+  const onPickRef = useRef(onPick);
+  const meshesRef = useRef<THREE.Mesh[]>([]);
+
+  useEffect(() => {
+    onPickRef.current = onPick;
+  }, [onPick]);
+
+  useEffect(() => {
+    meshesRef.current.forEach((mesh, index) => {
+      const material = mesh.material as THREE.MeshStandardMaterial;
+      material.emissive.setHex(index === activeIndex ? 0x202020 : 0x000000);
+    });
+  }, [activeIndex]);
 
   useEffect(() => {
     const host = hostRef.current;
@@ -107,6 +120,7 @@ export function ThreeLessonScene({ sceneType, words, activeIndex, onPick }: Prop
       pickable.push(mesh);
       group.add(mesh);
     });
+    meshesRef.current = pickable;
 
     const raycaster = new THREE.Raycaster();
     const pointer = new THREE.Vector2();
@@ -146,7 +160,7 @@ export function ThreeLessonScene({ sceneType, words, activeIndex, onPick }: Prop
       raycaster.setFromCamera(pointer, camera);
 
       const hit = raycaster.intersectObjects(pickable, false)[0];
-      if (hit) onPick(Number(hit.object.userData.index));
+      if (hit) onPickRef.current(Number(hit.object.userData.index));
     };
 
     renderer.domElement.addEventListener("pointerdown", onPointerDown);
@@ -190,10 +204,11 @@ export function ThreeLessonScene({ sceneType, words, activeIndex, onPick }: Prop
       });
       platform.geometry.dispose();
       (platform.material as THREE.Material).dispose();
+      meshesRef.current = [];
       renderer.dispose();
       host.replaceChildren();
     };
-  }, [sceneType, words, activeIndex, onPick]);
+  }, [sceneType, words]);
 
   return <div ref={hostRef} className="three-stage" aria-label="Interactive 3D learning scene" />;
 }
