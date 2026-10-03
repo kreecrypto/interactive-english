@@ -125,12 +125,12 @@ export function ColorMvpLesson() {
     setFeedback(`${colors[index].word} — ${colors[index].thai}`);
   };
 
-  const explorePick = (index: number) => {
+  const explorePick = useCallback((index: number) => {
     setActiveWord(index);
     setExploredWords((items) => rememberUnique(items, index));
     speak(colors[index].word);
     setFeedback(`เยี่ยม! นี่คือ ${colors[index].word}`);
-  };
+  }, [speak]);
 
   const answerListen = (index: number) => {
     const expected = listenTargets[listenIndex];
@@ -151,22 +151,21 @@ export function ColorMvpLesson() {
     }
   };
 
-  const answerGame = (index: number) => {
+  const answerGame = useCallback((index: number) => {
     if (index !== currentGameTargetIndex) {
       setFeedback(`ยังไม่ใช่ ลองหา ${currentGameTarget.word} อีกครั้ง`);
       return;
     }
 
     speak(currentGameTarget.word);
-    const nextCorrect = gameCorrect + 1;
-    setGameCorrect(nextCorrect);
+    setGameCorrect((value) => value + 1);
     setActiveWord(index);
     setFeedback(`เจอแล้ว! ${currentGameTarget.word} ⭐`);
 
     if (gameIndex < gameTargets.length - 1) {
       setGameIndex((value) => value + 1);
     }
-  };
+  }, [currentGameTarget.word, currentGameTargetIndex, gameIndex, speak]);
 
   const answerQuiz = (answer: string) => {
     if (quizLocked) return;
